@@ -21,12 +21,12 @@ class Dashboard {
 
         // PIM
         employeeName: ()=> cy.get('.oxd-autocomplete-wrapper').eq(0).find('input'),
-        employeeName2: ()=> cy.get('.oxd-autocomplete-option').contains('Peter Mac Anderson'),
+        employeeName2: ()=> cy.get('.oxd-autocomplete-option').contains('Sara Tencrady'),
 
         employeeId: ()=> cy.get('.oxd-input.oxd-input--active').last(),
 
         supervisorName: ()=> cy.get('.oxd-autocomplete-wrapper').eq(1).find('input'),
-        supervisorName2: ()=> cy.get('.oxd-autocomplete-option').contains('Ravi M B'),
+        supervisorName2: () => cy.contains('.oxd-autocomplete-option', /Ranga\s+Akunuri/),
 
         mploymentStatus: ()=> cy.get('.oxd-select-text.oxd-select-text--active').eq(0),
         mploymentStatus2: ()=> cy.get('.oxd-select-option').contains('Freelance'),

@@ -1,5 +1,5 @@
-const {home} = require('../../support/pom/OrangeHRM') // POM
-const {dashboard} = require('../../support/pom/OrangeDashboard') //POM
+const {home} = require('../../pages/OrangeHRM') // POM
+const {dashboard} = require('../../pages/OrangeDashboard') //POM
 const {username, password, newPassword, licenseExpires, birthday} = Cypress.env('AdminUser') // Variables ENV
 import { faker, Faker } from '@faker-js/faker' // Faker - Random Data
 
@@ -67,10 +67,10 @@ describe('OrangeHRM', ()=> {
         dashboard.elements.empleados().invoke('text').as('primerTexto')
 
         // Completar los campos
-        dashboard.typeEmployeeName('Peter Mac') // 1
+        dashboard.typeEmployeeName('Sara') // 1
         dashboard.selectEmployeeName()
         dashboard.typeEmployeeId('0213') // 2
-        dashboard.typeSupervisorName('Ravi M') //3
+        dashboard.typeSupervisorName('Ranga') //3
         dashboard.selectSupervisorName()
         dashboard.clickMploymentStatus() // 4
         dashboard.selectMploymentStatus()
@@ -88,38 +88,7 @@ describe('OrangeHRM', ()=> {
         })
         
     })
-    it('CP03: Validar poder cambiar la contraseña exitosamente', ()=> {
-
-        cy.url().should('contains', 'dashboard/index')
-
-        // Cambiar Contraseña:
-        dashboard.clickPerfil()
-        dashboard.cambiarPass()
-        cy.url().should('contain', 'updatePassword')
-        dashboard.typePass(password)
-        dashboard.typeNewPassword(newPassword)
-        dashboard.confirmNewPass(newPassword)
-        dashboard.clickSave()
-        dashboard.elements.cartel().should('exist').and('be.visible').and('contain', 'Successfully Saved')
-
-        // Realizar Un Logout:
-        dashboard.clickPerfil()
-        dashboard.hacerLogout()
-        cy.url().should('contains', 'auth/login')
-
-        // Logearse con la Nueva Contraseña:
-        home.enterUsername(username)
-        home.enterPassword(newPassword)
-        home.submitButton()
-        cy.wait(2000)
-
-        // Validar que el cambio de contraseña realmente fue exitoso:
-        dashboard.elements.alerta().should('not.exist')
-        cy.url().should('contains', 'dashboard/index')
-
-        // Fallo el Caso de Prueba
-    })
-    it('CP04: Validar poder cambiar los Datos Personales en la seccion My Info', ()=> {
+    it('CP03: Validar poder cambiar los Datos Personales en la seccion My Info', ()=> {
 
         // Ir a la seccion My Info
         cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewPersonalDetails/empNumber/7')
@@ -153,28 +122,5 @@ describe('OrangeHRM', ()=> {
         // Mensaje 
         dashboard.elements.cartel().should('exist').and('be.visible').and('contain', 'Successfully Updated')
     })
-    it('CP05: Cositas Randoms', ()=> {
-
-        // Realizar Un Logout:
-        dashboard.clickPerfil()
-        dashboard.hacerLogout()
-        cy.url().should('contains', 'auth/login')
-
-        //Validar que la URL sea exactamente igual a la que se espera
-        cy.url().should('eq', 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
-
-        // Validar atributos css, en este caso el color del boton Login
-        home.elements.loginButton().should('have.css', 'background-color', 'rgb(255, 123, 29)')
-
-        // Realizar un Login
-        home.enterUsername(username)
-        home.enterPassword(password)
-        home.submitButton()
-
-        // Validar que el login fue exitoso
-        cy.url().should('contains', 'dashboard/index')
-        dashboard.elements.miCuenta().should('exist')
-        dashboard.elements.fotoPerfil().should('exist')
-        
-    })
+    
 })

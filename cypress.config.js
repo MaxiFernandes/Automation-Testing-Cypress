@@ -1,13 +1,38 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
+
+  reporter: 'cypress-mochawesome-reporter',
+
+  reporterOptions: {
+    reportDir: 'cypress/reports',
+    overwrite: false,
+    html: true,
+    json: true,
+    charts: true
+  },
+
+  video: true,
+
+  screenshotOnRunFailure: true,
+
+  videosFolder: 'cypress/videos',
+
+  screenshotsFolder: 'cypress/screenshots',
+
   e2e: {
+
     chromeWebSecurity: false,
+
     setupNodeEvents(on, config) {
-    // implement node event listeners here
+
+      require('cypress-mochawesome-reporter/plugin')(on);
+
+      return config;
     },
-    env:{
-      AdminUser:{
+
+    env: {
+      AdminUser: {
         username: "Admin",
         password: "admin123",
         newPassword: "admin1234",
