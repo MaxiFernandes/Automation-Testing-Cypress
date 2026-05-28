@@ -16,16 +16,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Cypress Run
+        uses: cypress-io/github-action@v6
         with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run Regression Tests
-        run: npm run regression
+          command: npm run regression
 
       - name: Upload Screenshots
         if: failure()
